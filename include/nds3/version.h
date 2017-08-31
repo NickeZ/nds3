@@ -1,0 +1,8 @@
+#ifndef VERSION_H
+#define VERSION_H
+
+#define NDS_VERSION_MAJOR 3
+#define NDS_VERSION_MINOR 1
+#define NDS_VERSION_PATCH 0
+
+#endif // VERSION_H

@@ -1,0 +1,23 @@
+file(
+    STRINGS
+    ${versionfile}
+    VERSION_MAJOR
+    REGEX "VERSION_MAJOR"
+)
+string(REGEX REPLACE "[^0-9]+" "" VERSION_MAJOR ${VERSION_MAJOR})
+file(
+    STRINGS
+    ${versionfile}
+    VERSION_MINOR
+    REGEX "VERSION_MINOR"
+)
+string(REGEX REPLACE "[^0-9]+" "" VERSION_MINOR ${VERSION_MINOR})
+file(
+    STRINGS
+    ${versionfile}
+    VERSION_PATCH
+    REGEX "VERSION_PATCH"
+)
+string(REGEX REPLACE "[^0-9]+" "" VERSION_PATCH ${VERSION_PATCH})
+set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+message(STATUS "Found version ${VERSION}")

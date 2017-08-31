@@ -2,7 +2,14 @@ cmake_minimum_required(VERSION 2.8.8)
 
 project(nds3 C CXX)
 
-set(VERSION "1.0.0")
+# Include path for additional cmake modules
+#-------------------------
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR})
+
+# Get version from version.h
+#---------------------------
+set(versionfile ${CMAKE_CURRENT_SOURCE_DIR}/../include/nds3/version.h)
+include(parse_version)
 
 # User Options
 #-------------
@@ -18,9 +25,7 @@ endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -Wextra -pedantic")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility-inlines-hidden")
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")
-endif()
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 --coverage")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-as-needed")
 
 # Set pre-processor definitions

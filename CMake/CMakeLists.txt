@@ -1,20 +1,27 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.8)
 
-project(nds3)
+project(nds3 C CXX)
 
 set(VERSION "1.0.0")
+
+# User Options
+#-------------
+option(BUILD_SHARED_LIBS "Build as shared library" ON)
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug"
+        CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel."
+        FORCE)
+endif()
 
 # Set compiler flags
 #-------------------
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -Wextra -pedantic")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -pthread -fvisibility=hidden")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility-inlines-hidden")
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
-else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O3")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")
 endif()
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fPIC -Wl,-as-needed")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-as-needed")
 
 # Set pre-processor definitions
 #------------------------------
@@ -32,7 +39,7 @@ file(
 )
 file(
   GLOB
-  nds_include_implementation
+  nds_include_impl
   "${CMAKE_CURRENT_SOURCE_DIR}/../include/nds3/impl/*.h"
 )
 file(
@@ -43,11 +50,12 @@ file(
 
 # Add the source files to the nds3 library
 #-----------------------------------------
-add_library(nds3 SHARED  ${nds_sources})
+add_library(nds3 ${nds_sources} ${nds_include_interface} ${nds_include_impl})
 
 # Add dependencies to the nds3 library
 #-------------------------------------
-target_link_libraries(nds3 rt dl pthread)
+find_package(Threads REQUIRED)
+target_link_libraries(nds3 rt dl ${CMAKE_THREAD_LIBS_INIT})
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_link_libraries(nds3 gcov)
 endif()
@@ -99,8 +107,12 @@ install(
     OWNER_READ OWNER_WRITE OWNER_EXECUTE
     GROUP_READ GROUP_EXECUTE
     WORLD_READ WORLD_EXECUTE
-  LIBRARY DESTINATION "${LIBDEST}"
-  COMPONENT "Shared library"
+  LIBRARY
+    DESTINATION "${LIBDEST}"
+    COMPONENT "Shared Library"
+  ARCHIVE
+    DESTINATION "${LIBDEST}"
+    COMPONENT "Static Library"
 )
 install(
   FILES ${nds_include_interface}
@@ -108,7 +120,7 @@ install(
   COMPONENT "Included files"
 )
 install(
-  FILES ${nds_include_implementation}
+  FILES ${nds_include_impl}
   DESTINATION include/nds3/impl
   COMPONENT "Included files for control system developers"
 )

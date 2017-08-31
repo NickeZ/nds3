@@ -26,9 +26,21 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 add_subdirectory(${CMAKE_BINARY_DIR}/googletest-src
                  ${CMAKE_BINARY_DIR}/googletest-build)
 
+# User Options
+#-------------
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug"
+        CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel."
+        FORCE)
+endif()
+
 # Set compiler flags
 #-------------------
-set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -Wextra -pedantic -pthread --coverage" )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -Wextra -pedantic" )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage" )
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
+endif()
 
 # Set pre-processor definitions
 #------------------------------
@@ -49,9 +61,8 @@ file(GLOB nds_sources "${CMAKE_CURRENT_SOURCE_DIR}/../src/*.cpp")
 #-----------------------------------------
 add_executable(nds3tests ${nds_sources})
 
-# Add dependencies to the nds3 library
+# Add dependencies to the tests
 #-------------------------------------
+find_package(Threads REQUIRED)
 find_library(nds3_library NAMES nds3 PATHS ${LIBRARY_LOCATION})
-target_link_libraries(nds3tests ${nds3_library} gtest pthread gcov)
-
-
+target_link_libraries(nds3tests ${nds3_library} gtest gcov ${CMAKE_THREAD_LIBS_INIT})

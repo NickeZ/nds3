@@ -32,9 +32,10 @@ NDS provides the following features:
 
 ## Developer Dependencies
 
-cmake 2.8.2+ required to run unit tests. Included in RHEL 6.6, Debian Wheezy, Ubuntu Trusty.
-
-GCC 4.9+ is recommended because of [GCC 57869](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=57869).
+* CMake 2.8.8+
+* GCC >= 4.8.1
+* GCC >= 4.9 is recommended because of [GCC 57869](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=57869).
+* clang-format >= 3.9 is recommended to correctly format the code.
 
 ## Package Installation
 
@@ -48,13 +49,40 @@ Packages are not available yet.
 mkdir build
 cd build
 cmake ../CMake
-make install
+make
+sudo make install
+```
+
+### Build with optimizations
+
+```
+mkdir build
+cd build
+cmake ../CMake -DCMAKE_BUILD_TYPE=Release
+make
+sudo make install
 ```
 
 ### Using make
 
 ```
-make install
+make
+sudo make install
+```
+
+### List configure options
+
+```
+$ cmake -LH ../CMake/
+...
+// Build as shared library
+BUILD_SHARED_LIBS:BOOL=ON
+
+// Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel.
+CMAKE_BUILD_TYPE:STRING=Debug
+
+// Install path prefix, prepended onto install directories.
+CMAKE_INSTALL_PREFIX:PATH=/usr/local
 ```
 
 ## Run unit tests
@@ -77,4 +105,5 @@ make install
     cd doc/examples/build
     cmake ../CMake -DLIBRARY_LOCATION=../../../build
     make
+    sudo make install
     ```

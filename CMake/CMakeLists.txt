@@ -68,9 +68,9 @@ endif()
 
 # Settings for installers
 #------------------------
-set(CPACK_PACKAGE_NAME "nds3Core")
+set(CPACK_PACKAGE_NAME "libnds3")
 set(CPACK_PACKAGE_VERSION ${VERSION})
-set(CPACK_PACKAGE_VENDOR "Cosylab d.o.o.")
+set(CPACK_PACKAGE_VENDOR "Cosylab")
 set(CPACK_PACKAGE_CONTACT "Niklas Claesson")
 set(
   CPACK_PACKAGE_DESCRIPTION_SUMMARY

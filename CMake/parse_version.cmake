@@ -20,4 +20,3 @@ file(
 )
 string(REGEX REPLACE "[^0-9]+" "" VERSION_PATCH ${VERSION_PATCH})
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
-message(STATUS "Found version ${VERSION}")

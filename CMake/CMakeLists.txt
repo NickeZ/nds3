@@ -6,10 +6,11 @@ project(nds3 C CXX)
 #-------------------------
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR})
 
-# Get version from version.h
+# Get VERSION, VERSION_MAJOR, VERSION_MINOR and VERSION_PATCH from version.h
 #---------------------------
 set(versionfile ${CMAKE_CURRENT_SOURCE_DIR}/../include/nds3/version.h)
 include(parse_version)
+message(STATUS "Found version ${VERSION}")
 
 # User Options
 #-------------

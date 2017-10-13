@@ -20,7 +20,7 @@ mkdir doc/examples/build
 	cmake -DCMAKE_BUILD_TYPE=Debug ../CMake -DLIBRARY_LOCATION=../../../build
 	make)
 
-lcov --directory . --capture --output-file coverage.info
-lcov --remove coverage.info '/usr/*' 'googletest-src/*' 'tests/*' --output-file coverage.info
+lcov --directory . --capture --output-file coverage.info > /dev/null
+lcov --remove coverage.info '/usr/*' 'googletest-src/*' 'tests/*' --output-file coverage.info > /dev/null
 lcov --list coverage.info
 coveralls-lcov --repo-token "${COVERALLS_TOKEN}" coverage.info

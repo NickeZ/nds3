@@ -1,17 +1,12 @@
 language: cpp
+sudo: true
 dist: trusty
-
-addons:
-  apt:
-    packages:
-      - doxygen
-      - doxygen-doc
-      - doxygen-latex
-      - doxygen-gui
-      - graphviz
 
 env:
     - DOXYFILE=doc/api/DoxyfileHTML PATH=$HOME/.local/usr/bin:$PATH
+
+before_script:
+    - ./scripts/travis-before-script.sh
 
 install:
     - ./scripts/travis-install.sh
@@ -20,4 +15,4 @@ script:
     - ./scripts/travis-script.sh
 
 after_success:
-    - scripts/deploy_doxygen
+    - ./scripts/travis-after-success.sh
